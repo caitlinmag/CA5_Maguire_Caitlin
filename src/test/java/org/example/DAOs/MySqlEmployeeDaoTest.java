@@ -2,10 +2,8 @@ package org.example.DAOs;
 
 import org.example.DTOs.Employee;
 import org.example.Exceptions.DaoException;
-import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,7 +16,7 @@ class MySqlEmployeeDaoTest {
      */
 
     /**
-     * Reference used for JUnit testing for java and sql:
+     * Tutorial used for JUnit testing for java and sql:
      * https://softwaredesign.home.blog/tutorials/junit-test-with-dao-data-access-object-class/
      */
 
