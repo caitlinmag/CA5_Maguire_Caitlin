@@ -9,6 +9,16 @@ import java.util.Comparator;
 import java.util.List;
 
 public class MySqlEmployeeDao extends MySqlDao implements EmployeeDaoInterface {
+    List<Employee> employeesList = new ArrayList<>();
+
+    /**
+     * Main author: Caitlin Maguire
+     *
+     */
+    //created an arrayList constructor to access the employeesList arrayList in other classes
+    public List<Employee> getEmployeesList(){
+        return this.employeesList;
+    }
 
     /**
      * Main author: Caitlin Maguire
