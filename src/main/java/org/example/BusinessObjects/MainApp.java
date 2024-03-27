@@ -2,9 +2,10 @@ package org.example.BusinessObjects;
 
 import org.example.DAOs.EmployeeDaoInterface;
 import org.example.DAOs.MySqlEmployeeDao;
-import org.example.DTOs.Employee;
+import org.example.DTOs.*;
 import org.example.Exceptions.DaoException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,6 +18,9 @@ public class MainApp {
             System.out.println("2. Get entity by id");
             System.out.println("3. Delete entity by id");
             System.out.println("4. Insert an entity");
+            System.out.println("5. Update an entity based on ID");
+            System.out.println("6. Filter entities");
+
             System.out.println("0. Exit");
             choice = key.nextInt();
             switch (choice) {
@@ -114,9 +118,136 @@ public class MainApp {
                     }
                     break;
                 }
+
+                case 5: {
+                    EmployeeDaoInterface IUEmployeeDao = new MySqlEmployeeDao();
+                    int empID;
+                    System.out.println("Enter the ID of the employee you wish to update: ");
+                    empID = key.nextInt();
+
+                    key.nextLine();
+
+                    System.out.println("Select fields to update (comma-separated, e.g., firstName, lastName, age, department, role, hourlyRate): ");
+                    String fieldsInput = key.nextLine();
+
+                    String[] fields = fieldsInput.split(",");
+                    List<String> fieldsToUpdate = Arrays.asList(fields);
+
+                    Employee updatedEmployee = new Employee(0, null, null, 0, null, null, 0.0f);
+
+                    updatedEmployee.setEmpID(empID);
+                    for (String field : fieldsToUpdate) {
+                        switch (field) {
+                            case "firstName":
+                                System.out.print("Enter new first name: ");
+                                updatedEmployee.setFirstName(key.nextLine());
+                                break;
+                            case "lastName":
+                                System.out.print("Enter new last name: ");
+                                updatedEmployee.setLastName(key.nextLine());
+                                break;
+                            case "age":
+                                System.out.print("Enter new age: ");
+                                updatedEmployee.setAge(key.nextInt());
+                                key.nextLine();
+                                break;
+                            case "department":
+                                System.out.print("Enter new department: ");
+                                updatedEmployee.setDepartment(key.nextLine());
+                                break;
+                            case "role":
+                                System.out.print("Enter new role: ");
+                                updatedEmployee.setRole(key.nextLine());
+                                break;
+                            case "hourlyRate":
+                                System.out.print("Enter new hourly rate: ");
+                                updatedEmployee.setHourlyRate(key.nextFloat());
+                                key.nextLine();
+                                break;
+                        }
+                    }
+                    try {
+                        System.out.println("\nCalling updateEmployee()\n");
+                        Employee employee = IUEmployeeDao.updateEmployee(updatedEmployee, fieldsToUpdate);
+                        System.out.println("Employee updated successfully");
+                        System.out.println("Updated Employee: " + IUEmployeeDao.findEmployeeById(employee.getEmpID()));
+                    } catch (DaoException ex) {
+                        ex.printStackTrace();
+                    }
+                    break;
+                }
+                case 6: {
+                    Filters();
+                }
+                break;
+
+
             }
         } while (choice != 0);
 
     }
+
+    public static void Filters() {
+        Scanner key=new Scanner(System.in);
+        EmployeeDaoInterface VIEmployeeDao = new MySqlEmployeeDao();
+        String input;
+        List<Employee> employeesList;
+        System.out.println("What would you like to filter entities by (firstName, lastName, age, department, role, hourlyRate): ");
+        input = key.nextLine();
+        if (!input.equals("firstName") && !input.equals("lastName") && !input.equals("age") && !input.equals("department") && !input.equals("role") && !input.equals("hourlyRate")) {
+            System.out.println("\nInvalid option... make sure to check that your option is inputted as displayed.");
+        } else {
+            try {
+                switch (input) {
+                    case "firstName" : {
+                        FirstNameComparator comp = new FirstNameComparator();
+                        employeesList = VIEmployeeDao.findEmployeesUsingFilter(input, comp);
+                        for (Employee e : employeesList)
+                            System.out.println("Employee: " + e.toString());
+                        break;
+                    }
+                    case "lastName": {
+                        LastNameComparator comp = new LastNameComparator();
+                        employeesList = VIEmployeeDao.findEmployeesUsingFilter(input, comp);
+                        for (Employee e : employeesList)
+                            System.out.println("Employee: " + e.toString());
+                        break;
+                    }
+                    case "age" : {
+                        AgeComparator comp = new AgeComparator();
+                        employeesList = VIEmployeeDao.findEmployeesUsingFilter(input, comp);
+                        for (Employee e : employeesList)
+                            System.out.println("Employee: " + e.toString());
+                        break;
+                    }
+                    case "department" : {
+                        DepartmentComparator comp = new DepartmentComparator();
+                        employeesList = VIEmployeeDao.findEmployeesUsingFilter(input, comp);
+                        for (Employee e : employeesList)
+                            System.out.println("Employee: " + e.toString());
+                        break;
+                    }
+                    case "role" : {
+                        RoleComparator comp = new RoleComparator();
+                        employeesList = VIEmployeeDao.findEmployeesUsingFilter(input, comp);
+                        for (Employee e : employeesList)
+                            System.out.println("Employee: " + e.toString());
+                        break;
+                    }
+                    case "hourlyRate" : {
+                        HourlyRateComparator comp = new HourlyRateComparator();
+                        employeesList = VIEmployeeDao.findEmployeesUsingFilter(input, comp);
+                        for (Employee e : employeesList)
+                            System.out.println("Employee: " + e.toString());
+                        break;
+                    }
+                }
+            } catch (DaoException ex) {
+                ex.printStackTrace();
+            }
+
+        }
+    }
 }
+
 
