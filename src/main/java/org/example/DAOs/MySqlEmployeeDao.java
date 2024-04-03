@@ -1,5 +1,6 @@
 package org.example.DAOs;
 
+import com.google.gson.Gson;
 import org.example.DTOs.Employee;
 import org.example.Exceptions.DaoException;
 
@@ -10,15 +11,6 @@ import java.util.List;
 
 public class MySqlEmployeeDao extends MySqlDao implements EmployeeDaoInterface {
     List<Employee> employeesList = new ArrayList<>();
-
-    /**
-     * Main author: Caitlin Maguire
-     *
-     */
-    //created an arrayList constructor to access the employeesList arrayList in other classes
-    public List<Employee> getEmployeesList(){
-        return this.employeesList;
-    }
 
     /**
      * Main author: Caitlin Maguire
@@ -282,7 +274,6 @@ public class MySqlEmployeeDao extends MySqlDao implements EmployeeDaoInterface {
 
 
     @Override
-
     public List<Employee> findEmployeesUsingFilter(String filter, Comparator<Employee> names) throws DaoException{
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -316,6 +307,11 @@ public class MySqlEmployeeDao extends MySqlDao implements EmployeeDaoInterface {
         return employeesList;
     }
 
+    @Override
+    public String employeesListToJson(List<Employee> employeesList) {
+        Gson gsonParser = new Gson();
+        return gsonParser.toJson(employeesList);
+    }
 
 
 }

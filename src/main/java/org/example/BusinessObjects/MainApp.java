@@ -4,7 +4,9 @@ import org.example.DAOs.EmployeeDaoInterface;
 import org.example.DAOs.MySqlEmployeeDao;
 import org.example.DTOs.*;
 import org.example.Exceptions.DaoException;
+import org.example.DAOs.JsonConverter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -20,16 +22,17 @@ public class MainApp {
             System.out.println("4. Insert an entity");
             System.out.println("5. Update an entity based on ID");
             System.out.println("6. Filter entities");
+            System.out.println("7. JSON String of Employees");
 
             System.out.println("0. Exit");
+
             choice = key.nextInt();
             switch (choice) {
                 case 1: {
-
-                    EmployeeDaoInterface IEmployeeDao = new MySqlEmployeeDao();
-
                     //Feature 1: Display and return all employees
                     try {
+                        EmployeeDaoInterface IEmployeeDao = new MySqlEmployeeDao();
+
                         System.out.println("\nCall getAllEmployees()");
                         List<Employee> employeesList = IEmployeeDao.getAllEmployees();
 
@@ -58,9 +61,7 @@ public class MainApp {
                             System.out.println("Employee found: " + employee);
                         else
                             System.out.println("Employee not found");
-                    }
-                    catch(DaoException e )
-                    {
+                    } catch (DaoException e) {
                         e.printStackTrace();
                     }
 
@@ -180,7 +181,19 @@ public class MainApp {
                     Filters();
                 }
                 break;
+                case 7: {
+                    EmployeeDaoInterface IEmployeeDao = new MySqlEmployeeDao();
+                    System.out.println("\nCall Employees as a JSON string");
 
+                    try {
+                        List<Employee> employeesList = IEmployeeDao.getAllEmployees();  //get all of the employees first from the ArrayList using the getAllEmployees() method
+                        String employeesJson = IEmployeeDao.employeesListToJson(employeesList);
+                        System.out.println(employeesJson);
+                    } catch (DaoException ex) {
+                        ex.printStackTrace();
+                    }
+                    break;
+                }
 
             }
         } while (choice != 0);
@@ -188,7 +201,7 @@ public class MainApp {
     }
 
     public static void Filters() {
-        Scanner key=new Scanner(System.in);
+        Scanner key = new Scanner(System.in);
         EmployeeDaoInterface VIEmployeeDao = new MySqlEmployeeDao();
         String input;
         List<Employee> employeesList;
@@ -199,7 +212,7 @@ public class MainApp {
         } else {
             try {
                 switch (input) {
-                    case "firstName" : {
+                    case "firstName": {
                         FirstNameComparator comp = new FirstNameComparator();
                         employeesList = VIEmployeeDao.findEmployeesUsingFilter(input, comp);
                         for (Employee e : employeesList)
@@ -213,28 +226,28 @@ public class MainApp {
                             System.out.println("Employee: " + e.toString());
                         break;
                     }
-                    case "age" : {
+                    case "age": {
                         AgeComparator comp = new AgeComparator();
                         employeesList = VIEmployeeDao.findEmployeesUsingFilter(input, comp);
                         for (Employee e : employeesList)
                             System.out.println("Employee: " + e.toString());
                         break;
                     }
-                    case "department" : {
+                    case "department": {
                         DepartmentComparator comp = new DepartmentComparator();
                         employeesList = VIEmployeeDao.findEmployeesUsingFilter(input, comp);
                         for (Employee e : employeesList)
                             System.out.println("Employee: " + e.toString());
                         break;
                     }
-                    case "role" : {
+                    case "role": {
                         RoleComparator comp = new RoleComparator();
                         employeesList = VIEmployeeDao.findEmployeesUsingFilter(input, comp);
                         for (Employee e : employeesList)
                             System.out.println("Employee: " + e.toString());
                         break;
                     }
-                    case "hourlyRate" : {
+                    case "hourlyRate": {
                         HourlyRateComparator comp = new HourlyRateComparator();
                         employeesList = VIEmployeeDao.findEmployeesUsingFilter(input, comp);
                         for (Employee e : employeesList)
