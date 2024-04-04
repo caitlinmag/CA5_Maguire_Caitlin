@@ -10,7 +10,6 @@ import java.util.Comparator;
 import java.util.List;
 
 public class MySqlEmployeeDao extends MySqlDao implements EmployeeDaoInterface {
-    List<Employee> employeesList = new ArrayList<>();
 
     /**
      * Main author: Caitlin Maguire
@@ -306,13 +305,6 @@ public class MySqlEmployeeDao extends MySqlDao implements EmployeeDaoInterface {
         }
         return employeesList;
     }
-
-    @Override
-    public String employeesListToJson(List<Employee> employeesList) {
-        Gson gsonParser = new Gson();
-        return gsonParser.toJson(employeesList);
-    }
-
 
 }
 

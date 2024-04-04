@@ -183,12 +183,15 @@ public class MainApp {
                 break;
                 case 7: {
                     EmployeeDaoInterface IEmployeeDao = new MySqlEmployeeDao();
+
+                    //create a json converter object
+                    JsonConverter jsonConverter = new JsonConverter();
+
                     System.out.println("\nCall Employees as a JSON string");
 
                     try {
                         List<Employee> employeesList = IEmployeeDao.getAllEmployees();  //get all of the employees first from the ArrayList using the getAllEmployees() method
-                        String employeesJson = IEmployeeDao.employeesListToJson(employeesList);
-                        System.out.println(employeesJson);
+                        jsonConverter.employeesListToJson(employeesList);               //call the employeesListToJson method using the jsonConverter object
                     } catch (DaoException ex) {
                         ex.printStackTrace();
                     }
