@@ -28,5 +28,20 @@ public class JsonConverter{
         return jsonString;
     }
 
+    /**
+     * Main Author: Rory O'Gorman
+     */
+    //Feature 8 - Method to convert a single employee to Json String
+    public String singleEmployeeToJson(Employee employee) throws DaoException{
+
+        Gson gsonParser = new Gson();
+
+        String jsonString = gsonParser.toJson(employee);
+
+        System.out.println("Employee JSON String is: \n" + jsonString);
+
+        return jsonString;
+    }
+
 
 }

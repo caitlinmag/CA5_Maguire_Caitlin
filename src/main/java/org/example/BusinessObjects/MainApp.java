@@ -23,6 +23,7 @@ public class MainApp {
             System.out.println("5. Update an entity based on ID");
             System.out.println("6. Filter entities");
             System.out.println("7. JSON String of Employees");
+            System.out.println("8. JSON String of Single Employee");
 
             System.out.println("0. Exit");
 
@@ -194,6 +195,27 @@ public class MainApp {
                         jsonConverter.employeesListToJson(employeesList);               //call the employeesListToJson method using the jsonConverter object
                     } catch (DaoException ex) {
                         ex.printStackTrace();
+                    }
+                    break;
+                }
+
+                case 8: {
+                    EmployeeDaoInterface IEmployeeDao = new MySqlEmployeeDao();
+
+                    //create a json converter object
+                    JsonConverter jsonConverter = new JsonConverter();
+
+                    System.out.println("\nCall Employees as a JSON string");
+
+                    try {
+                        Scanner kbrd = new Scanner(System.in);
+                        System.out.println("Please enter ID");
+                        int employeeID = kbrd.nextInt();
+                        Employee employee = IEmployeeDao.findEmployeeById(employeeID);
+                        jsonConverter.singleEmployeeToJson(employee);
+
+                    } catch (DaoException e) {
+                        e.printStackTrace();
                     }
                     break;
                 }
