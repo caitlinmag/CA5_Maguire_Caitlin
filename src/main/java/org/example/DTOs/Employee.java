@@ -1,6 +1,8 @@
 package org.example.DTOs;
 
-public class Employee {
+import java.util.Comparator;
+
+public class Employee implements Comparator<Employee>{
      int empID;
      String firstName;
      String lastName;
@@ -8,6 +10,16 @@ public class Employee {
      String department;
      String role;
      Float hourlyRate;
+
+    public Employee(int empID){
+        this.empID=empID;
+        this.firstName="";
+        this.lastName="";
+        this.age=0;
+        this.department="";
+        this.role="";
+        this.hourlyRate= (float) 0;
+    }
 
     public Employee(int empID, String firstName, String lastName, int age, String department, String role, Float hourlyRate) {
         this.empID = empID;
@@ -86,5 +98,9 @@ public class Employee {
                 ", role = '" + role + '\'' +
                 ", hourlyRate = " + hourlyRate +
                 '}';
+    }
+    @Override
+    public int compare(Employee o1, Employee o2) {
+        return o1.getFirstName().compareTo(o2.getFirstName());
     }
 }

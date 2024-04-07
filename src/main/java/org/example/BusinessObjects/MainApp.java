@@ -6,8 +6,6 @@ import org.example.DTOs.*;
 import org.example.Exceptions.DaoException;
 import org.example.DAOs.JsonConverter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,6 +13,14 @@ public class MainApp {
     public static void main(String[] args) {
         Scanner key = new Scanner(System.in);
         int choice;
+
+        String firstName;
+        String lastName;
+        int age;
+        String department;
+        String role;
+        float hourlyRate;
+
         do {
             System.out.println("\n1. Get all entities");
             System.out.println("2. Get entity by id");
@@ -24,7 +30,6 @@ public class MainApp {
             System.out.println("6. Filter entities");
             System.out.println("7. JSON String of Employees");
             System.out.println("8. JSON String of Single Employee");
-
             System.out.println("0. Exit");
 
             choice = key.nextInt();
@@ -85,12 +90,7 @@ public class MainApp {
                 }
                 case 4: {
                     EmployeeDaoInterface IVEmployeeDao = new MySqlEmployeeDao();
-                    String firstName;
-                    String lastName;
-                    int age;
-                    String department;
-                    String role;
-                    float hourlyRate;
+                 
                     System.out.print("First name: ");
                     firstName = key.next();
                     System.out.print("Last name: ");
@@ -120,57 +120,60 @@ public class MainApp {
                     }
                     break;
                 }
-
                 case 5: {
                     EmployeeDaoInterface IUEmployeeDao = new MySqlEmployeeDao();
                     int empID;
                     System.out.println("Enter the ID of the employee you wish to update: ");
                     empID = key.nextInt();
-
                     key.nextLine();
-
-                    System.out.println("Select fields to update (comma-separated, e.g., firstName, lastName, age, department, role, hourlyRate): ");
-                    String fieldsInput = key.nextLine();
-
-                    String[] fields = fieldsInput.split(",");
-                    List<String> fieldsToUpdate = Arrays.asList(fields);
-
-                    Employee updatedEmployee = new Employee(0, null, null, 0, null, null, 0.0f);
-
-                    updatedEmployee.setEmpID(empID);
-                    for (String field : fieldsToUpdate) {
-                        switch (field) {
-                            case "firstName":
-                                System.out.print("Enter new first name: ");
-                                updatedEmployee.setFirstName(key.nextLine());
-                                break;
-                            case "lastName":
-                                System.out.print("Enter new last name: ");
-                                updatedEmployee.setLastName(key.nextLine());
-                                break;
-                            case "age":
-                                System.out.print("Enter new age: ");
-                                updatedEmployee.setAge(key.nextInt());
-                                key.nextLine();
-                                break;
-                            case "department":
-                                System.out.print("Enter new department: ");
-                                updatedEmployee.setDepartment(key.nextLine());
-                                break;
-                            case "role":
-                                System.out.print("Enter new role: ");
-                                updatedEmployee.setRole(key.nextLine());
-                                break;
-                            case "hourlyRate":
-                                System.out.print("Enter new hourly rate: ");
-                                updatedEmployee.setHourlyRate(key.nextFloat());
-                                key.nextLine();
-                                break;
+                    boolean fin = false;
+                    Employee updateEmployee = new Employee(empID);
+                    String userInput;
+                    do {
+                        System.out.println("Select which field you would like to update (firstName, lastName, age, department, role, hourlyRate): ");
+                        userInput= key.nextLine();
+                        if (userInput.equalsIgnoreCase("firstName")){
+                            System.out.println("Enter new first name: ");
+                            firstName=key.nextLine();
+                            updateEmployee.setFirstName(firstName);
+                        }else if (userInput.equalsIgnoreCase("lastName")){
+                            System.out.println("Enter new last name: ");
+                            lastName=key.nextLine();
+                            updateEmployee.setLastName(lastName);
+                        }else if (userInput.equalsIgnoreCase("age")){
+                            System.out.println("Enter new age: ");
+                            age=key.nextInt();
+                            updateEmployee.setAge(age);
+                            key.nextLine();
+                        }else if (userInput.equalsIgnoreCase("department")){
+                            System.out.println("Enter new department: ");
+                            department=key.nextLine();
+                            updateEmployee.setDepartment(department);
+                        }else if (userInput.equalsIgnoreCase("role")){
+                            System.out.println("Enter new role: ");
+                            role=key.nextLine();
+                            updateEmployee.setRole(role);
+                        }else if (userInput.equalsIgnoreCase("hourlyRate")){
+                            System.out.println("Enter new hourly rate: ");
+                            hourlyRate=key.nextFloat();
+                            updateEmployee.setHourlyRate(hourlyRate);
+                            key.nextLine();
+                        }else{
+                            System.out.println("Invalid option");
                         }
-                    }
+                        System.out.println("Would you like to update another field? (yes or no): ");
+                        userInput=key.nextLine();
+                        if (userInput.equalsIgnoreCase("yes")){
+                            fin=true;
+                        }else if (userInput.equalsIgnoreCase("no")){
+                            fin=false;
+                        }else{
+                            System.out.println("Invalid option");
+                        }
+                    } while (fin);
                     try {
                         System.out.println("\nCalling updateEmployee()\n");
-                        Employee employee = IUEmployeeDao.updateEmployee(updatedEmployee, fieldsToUpdate);
+                        Employee employee = IUEmployeeDao.updateEmployee(empID, updateEmployee);
                         System.out.println("Employee updated successfully");
                         System.out.println("Updated Employee: " + IUEmployeeDao.findEmployeeById(employee.getEmpID()));
                     } catch (DaoException ex) {

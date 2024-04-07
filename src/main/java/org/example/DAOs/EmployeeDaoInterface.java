@@ -2,7 +2,6 @@ package org.example.DAOs;
 
 import org.example.DTOs.Employee;
 import org.example.Exceptions.DaoException;
-import org.example.DAOs.JsonConverter;
 
 import java.util.Comparator;
 import java.util.List;
@@ -17,6 +16,6 @@ public interface EmployeeDaoInterface {
 
     public int DeleteEmployee(int id)throws DaoException;
 
-    Employee updateEmployee(Employee e, List<String> fieldsToUpdate) throws DaoException;
+    public Employee updateEmployee(int id, Employee e) throws DaoException;
     public List<Employee> findEmployeesUsingFilter(String filter, Comparator<Employee> comp) throws DaoException;
 }
