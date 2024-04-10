@@ -1,5 +1,6 @@
 package org.example.DAOs;
 
+import org.example.DTOs.Employee;
 import org.example.Exceptions.DaoException;
 
 import java.sql.*;
@@ -12,7 +13,7 @@ import java.sql.*;
     This class implements functionality common to all MySQL DAOs
     getConnection()
  */
-public class MySqlDao {
+public abstract class MySqlDao {
 
     public Connection getConnection() throws DaoException {
 //        String driver = "C:\\mysql-connector-java-5.1.15-bin (1)";
