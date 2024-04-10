@@ -135,7 +135,7 @@ class MySqlEmployeeDaoTest {
             ed.InsertEmployee(testEmployee);
             assertNotNull(testEmployee);                       //checking that the testEmployee object is not null
             assertTrue(10 < testEmployee.getEmpID()); //tesing if the empId is greater than 10 - already empId 1 - 10 in the database
-            assertEquals(12, ed.getAllEmployees().size()); //test how many rows there are in the employees table
+            assertEquals(11, ed.getAllEmployees().size()); //test how many rows there are in the employees table
 
             //testing the new employee
             Employee newEmployee = ed.findEmployeeById(testEmployee.getEmpID());

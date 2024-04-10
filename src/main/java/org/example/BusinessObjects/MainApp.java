@@ -22,6 +22,7 @@ public class MainApp {
         float hourlyRate;
 
         do {
+            System.out.println("************ EMPLOYEES MENU ************");
             System.out.println("\n1. Get all entities");
             System.out.println("2. Get entity by id");
             System.out.println("3. Delete entity by id");
@@ -31,6 +32,7 @@ public class MainApp {
             System.out.println("7. JSON String of Employees");
             System.out.println("8. JSON String of Single Employee");
             System.out.println("0. Exit");
+            System.out.println("******************************************");
 
             choice = key.nextInt();
             switch (choice) {
@@ -191,11 +193,13 @@ public class MainApp {
                     //create a json converter object
                     JsonConverter jsonConverter = new JsonConverter();
 
-                    System.out.println("\nCall Employees as a JSON string");
+                    System.out.println("\nCall All Employees as a JSON string");
 
                     try {
                         List<Employee> employeesList = IEmployeeDao.getAllEmployees();  //get all of the employees first from the ArrayList using the getAllEmployees() method
-                        jsonConverter.employeesListToJson(employeesList);               //call the employeesListToJson method using the jsonConverter object
+                        String jsonString=jsonConverter.employeesListToJson(employeesList);               //call the employeesListToJson method using the jsonConverter object
+                        System.out.println("Json String of employees : \n" + jsonString); // output json string of employees list
+
                     } catch (DaoException ex) {
                         ex.printStackTrace();
                     }
@@ -208,7 +212,7 @@ public class MainApp {
                     //create a json converter object
                     JsonConverter jsonConverter = new JsonConverter();
 
-                    System.out.println("\nCall Employees as a JSON string");
+                    System.out.println("\nCall an Employee as a JSON string");
 
                     try {
                         Scanner kbrd = new Scanner(System.in);
