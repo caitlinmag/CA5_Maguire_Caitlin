@@ -1,6 +1,10 @@
 package ClientServer;
 
+import org.example.DAOs.EmployeeDaoInterface;
+import org.example.DAOs.JsonConverter;
 import org.example.DAOs.MySqlEmployeeDao;
+import org.example.DTOs.Employee;
+import org.example.Exceptions.DaoException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 
 public class Server {
     final int SERVER_PORT_NUMBER = 8888;
@@ -80,35 +85,52 @@ class ClientHandler implements Runnable {
     @Override
     public void run() {
         String request;
+        EmployeeDaoInterface IEmployeeDao = new MySqlEmployeeDao();
+
+        //create a json converter object
+        JsonConverter jsonConverter = new JsonConverter();
+
         try {
             while ((request = socketReader.readLine()) != null) {
                 System.out.println("Server (ClientHandler): Read command from client " + clientNum + ": " + request);
                 if (request.startsWith("1")) {
                     System.out.println("TEST");
+
                 } else if (request.startsWith("2")) {
-                    System.out.println("TEST");
-                } else if (request.startsWith("3")) {
-                    String message="TEST";
-                    socketWriter.println(message);
-                }else if (request.startsWith("0")){
-                    socketWriter.println("Goodbye");
-                    System.out.println("Server message: Client has notified us that it is quitting.");
-                }else {
-                    socketWriter.println("error I'm sorry I don't understand your request");
-                    System.out.println("Server message: Invalid request from client.");
+                    System.out.println("\nCall All Employees as a JSON string");
+
+                    try {
+                        List<Employee> employeesList = IEmployeeDao.getAllEmployees();  //get all of the employees first from the ArrayList using the getAllEmployees() method
+                        String jsonString=jsonConverter.employeesListToJson(employeesList);               //call the employeesListToJson method using the jsonConverter object
+                        System.out.println("Json String of employees : \n" + jsonString); // output json string of employees list
+
+                    } catch (DaoException ex) {
+                        ex.printStackTrace();
+                    }
                 }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            this.socketWriter.close();
-            try {
-                this.socketReader.close();
-                this.clientSocket.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            else if (request.startsWith("3")) {
+                String message = "TEST";
+                socketWriter.println(message);
+            } else if (request.startsWith("0")) {
+                socketWriter.println("Goodbye");
+                System.out.println("Server message: Client has notified us that it is quitting.");
+            } else {
+                socketWriter.println("error I'm sorry I don't understand your request");
+                System.out.println("Server message: Invalid request from client.");
             }
         }
-        System.out.println("Server: (ClientHandler): Handler for Client " + clientNum + " is terminating .....");
+    } catch(IOException e){
+        e.printStackTrace();
+    }finally{
+        this.socketWriter.close();
+        try {
+            this.socketReader.close();
+            this.clientSocket.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
+        System.out.println("Server: (ClientHandler): Handler for Client "+clientNum +" is terminating .....");
 }
+}
+
