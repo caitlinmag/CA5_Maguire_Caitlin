@@ -47,7 +47,6 @@ public class Server {
             try {
                 if (clientSocket != null) {
                     clientSocket.close();
-
                 }
             } catch (IOException e) {
                 System.out.println(e);
@@ -84,10 +83,13 @@ class ClientHandler implements Runnable {
 
     @Override
     public void run() {
-        String request;
-        EmployeeDaoInterface IEmployeeDao = new MySqlEmployeeDao();
+        String request; // request from the client
+        String clientResponse; // message to send back to the client
 
-        //create a json converter object
+        // creating objects to be able to call DAO methods
+        MySqlEmployeeDao ed = new MySqlEmployeeDao();
+
+        EmployeeDaoInterface IEmployeeDao = new MySqlEmployeeDao();
         JsonConverter jsonConverter = new JsonConverter();
 
         try {
@@ -96,41 +98,45 @@ class ClientHandler implements Runnable {
                 if (request.startsWith("1")) {
                     System.out.println("TEST");
 
+/**
+ * Main Author : Caitlin Maguire
+ *
+ * Feature 10: Display all entities
+ */
                 } else if (request.startsWith("2")) {
-                    System.out.println("\nCall All Employees as a JSON string");
+                    List<Employee> employeesList = ed.getAllEmployees();  // get all of the employees first from the ArrayList using the getAllEmployees() method
 
-                    try {
-                        List<Employee> employeesList = IEmployeeDao.getAllEmployees();  //get all of the employees first from the ArrayList using the getAllEmployees() method
-                        String jsonString=jsonConverter.employeesListToJson(employeesList);               //call the employeesListToJson method using the jsonConverter object
-                        System.out.println("Json String of employees : \n" + jsonString); // output json string of employees list
+                    clientResponse = jsonConverter.employeesListToJson(employeesList);      // call the employeesListToJson method using the jsonConverter object
 
-                    } catch (DaoException ex) {
-                        ex.printStackTrace();
-                    }
+                    socketWriter.println(clientResponse);     // sending the response back to the client - response is displaying all entities in json format
+
+                    System.out.println("Server message: display all entities response sent to client.");
+
+                } else if (request.startsWith("3")) {
+                    String message = "TEST";
+                    socketWriter.println(message);
+                } else if (request.startsWith("0")) {
+                    socketWriter.println("Goodbye");
+                    System.out.println("Server message: Client has notified us that it is quitting.");
+                } else {
+                    socketWriter.println("error I'm sorry I don't understand your request");
+                    System.out.println("Server message: Invalid request from client.");
                 }
-            else if (request.startsWith("3")) {
-                String message = "TEST";
-                socketWriter.println(message);
-            } else if (request.startsWith("0")) {
-                socketWriter.println("Goodbye");
-                System.out.println("Server message: Client has notified us that it is quitting.");
-            } else {
-                socketWriter.println("error I'm sorry I don't understand your request");
-                System.out.println("Server message: Invalid request from client.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DaoException e) {
+            throw new RuntimeException(e);
+        } finally {
+            this.socketWriter.close();
+            try {
+                this.socketReader.close();
+                this.clientSocket.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
         }
-    } catch(IOException e){
-        e.printStackTrace();
-    }finally{
-        this.socketWriter.close();
-        try {
-            this.socketReader.close();
-            this.clientSocket.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        System.out.println("Server: (ClientHandler): Handler for Client " + clientNum + " is terminating .....");
     }
-        System.out.println("Server: (ClientHandler): Handler for Client "+clientNum +" is terminating .....");
-}
 }
 
