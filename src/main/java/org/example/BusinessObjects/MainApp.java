@@ -199,7 +199,6 @@ public class MainApp {
                         List<Employee> employeesList = IEmployeeDao.getAllEmployees();  //get all of the employees first from the ArrayList using the getAllEmployees() method
                         String jsonString=jsonConverter.employeesListToJson(employeesList);               //call the employeesListToJson method using the jsonConverter object
                         System.out.println("Json String of employees : \n" + jsonString); // output json string of employees list
-
                     } catch (DaoException ex) {
                         ex.printStackTrace();
                     }
