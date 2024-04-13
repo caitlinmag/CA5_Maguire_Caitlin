@@ -33,7 +33,6 @@ public class JsonConverter {
 
         // TypeToken for gson parser to create an arraylist of employee objec
 //         employeesList = gsonParser.fromJson();
-
     }
 
     /**
@@ -48,6 +47,5 @@ public class JsonConverter {
 
         return jsonString;
     }
-
 
 }

@@ -56,15 +56,15 @@ public class Client {
 
                     // recieving the json string of employees from server
                     String serverResponse = in.readLine();
-
                     Type employeeListType = new TypeToken<ArrayList<Employee>>(){}.getType();    // Using TypeToken for the gson parser to create arraylist of employees
 
                     List<Employee> employeesList = new Gson().fromJson(serverResponse, employeeListType);   // parse the ArrayList from json
 
+                    System.out.println("All Employees of the Retail Store: ");
+
                     // iterate through employees and display each employee using the toString() method
-                    for(Employee employee : employeesList){
+                    for(Employee employee : employeesList)
                         System.out.println(employee.toString());
-                    }
 
                 } else if (userRequest.startsWith("3")) {
                     String newEmployeeJson = in.readLine();
@@ -82,9 +82,9 @@ public class Client {
                 //TODO: create a displayClientMenu() method
 
                 // multithreading the client menu
-                System.out.println("\n1. Display entity by id in JSON format");
-                System.out.println("2. Display all entities in JSON format");
-                System.out.println("3. Add an entity");
+                System.out.println("\n1. Display Entity by id");
+                System.out.println("2. Display all Entities");
+                System.out.println("3. Add an Entity");
                 System.out.println("0. Quit");
 
                 System.out.println("Please enter your choice: ");
