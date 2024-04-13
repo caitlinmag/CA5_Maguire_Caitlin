@@ -13,21 +13,20 @@ import java.util.List;
 
 public class MySqlEmployeeDao extends MySqlDao implements EmployeeDaoInterface {
 
+    // Declaring outside of the methods to reuse them
     Connection connection = null;
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
-
+    List<Employee> employeesList = new ArrayList<>();
 
     /**
      * Main author: Caitlin Maguire
+     *
      */
-    //Feature 1: Return a list of all employees and display
+
+    //Feature 1: Return and display a list of employee entities
     @Override
-    public List<Employee> getAllEmployees() throws DaoException {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        List<Employee> employeesList = new ArrayList<>();
+    public  List<Employee> getAllEmployees() throws DaoException {
 
         try {
             //Get the connection object inherited from MySqlDao
@@ -38,6 +37,8 @@ public class MySqlEmployeeDao extends MySqlDao implements EmployeeDaoInterface {
 
             resultSet = preparedStatement.executeQuery();
 
+            // Display the column headers of the employees table
+
             while (resultSet.next()) {
                 int empID = resultSet.getInt("empID");
                 String firstName = resultSet.getString("firstName");
@@ -47,6 +48,7 @@ public class MySqlEmployeeDao extends MySqlDao implements EmployeeDaoInterface {
                 String role = resultSet.getString("role");
                 Float hourlyRate = resultSet.getFloat("hourlyRate");
 
+                // populating the employeesList ArrayList
                 Employee e = new Employee(empID, firstName, lastName, age, department, role, hourlyRate);
                 employeesList.add(e);
             }
@@ -74,7 +76,7 @@ public class MySqlEmployeeDao extends MySqlDao implements EmployeeDaoInterface {
     /**
      * Main author: Rory O'Gorman
      */
-    //Feature 2: find a single employee by ID
+    //Feature 2: Find and display a single employee by ID
     @Override
     public Employee findEmployeeById(int employeeID) throws DaoException {
         Connection connection = null;
@@ -121,6 +123,8 @@ public class MySqlEmployeeDao extends MySqlDao implements EmployeeDaoInterface {
         }
         return employee;     // reference to User object, or null value
     }
+
+
     /**
      * Main author: Jamie Lawlor
      */
@@ -196,15 +200,13 @@ public class MySqlEmployeeDao extends MySqlDao implements EmployeeDaoInterface {
                 throw new DaoException("findUserByUsernamePassword() " + ex.getMessage());
             }
         }
-
         return e;
     }
-
-    //  Feature 5: update an entity by ID
 
     /**
      * Main author: Jamie Lawlor
      */
+    // Feature 5: Update an entity by ID
     @Override
     public Employee updateEmployee(int id, Employee e) throws DaoException {
         EmployeeDaoInterface IUserDao = new MySqlEmployeeDao();
@@ -261,13 +263,10 @@ public class MySqlEmployeeDao extends MySqlDao implements EmployeeDaoInterface {
         return e;
     }
 
-
     /**
      * Main author: Jamie Lawlor
      */
     //Feature 6: Filter entities
-
-
     @Override
     public List<Employee> findEmployeesUsingFilter(String filter, Comparator<Employee> names) throws DaoException{
         Connection connection = null;
@@ -301,7 +300,6 @@ public class MySqlEmployeeDao extends MySqlDao implements EmployeeDaoInterface {
         }
         return employeesList;
     }
-
 }
 
 

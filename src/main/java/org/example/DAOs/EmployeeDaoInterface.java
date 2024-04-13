@@ -18,4 +18,5 @@ public interface EmployeeDaoInterface {
 
     public Employee updateEmployee(int id, Employee e) throws DaoException;
     public List<Employee> findEmployeesUsingFilter(String filter, Comparator<Employee> comp) throws DaoException;
+
 }

@@ -88,8 +88,6 @@ class ClientHandler implements Runnable {
 
         // creating objects to be able to call DAO methods
         MySqlEmployeeDao ed = new MySqlEmployeeDao();
-
-        EmployeeDaoInterface IEmployeeDao = new MySqlEmployeeDao();
         JsonConverter jsonConverter = new JsonConverter();
 
         try {
@@ -104,7 +102,7 @@ class ClientHandler implements Runnable {
  * Feature 10: Display all entities
  */
                 } else if (request.startsWith("2")) {
-                    List<Employee> employeesList = ed.getAllEmployees();  // get all of the employees first from the ArrayList using the getAllEmployees() method
+                    List<Employee> employeesList = ed.getAllEmployees(); // get all of the employees first from the ArrayList using the getAllEmployees() method
 
                     clientResponse = jsonConverter.employeesListToJson(employeesList);      // call the employeesListToJson method using the jsonConverter object
 
