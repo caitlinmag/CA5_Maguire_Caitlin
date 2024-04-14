@@ -1,5 +1,7 @@
 package ClientServer;
 
+import com.google.gson.Gson;
+
 import org.example.DAOs.JsonConverter;
 import org.example.DAOs.MySqlEmployeeDao;
 import org.example.DTOs.Employee;
@@ -110,11 +112,11 @@ class ClientHandler implements Runnable {
                         e.printStackTrace();
                     }
 
-        /**
-         * Main Author : Caitlin Maguire
-         *
-         * Feature 10: Display all entities
-         */
+                    /**
+                     * Main Author : Caitlin Maguire
+                     *
+                     * Feature 10: Display all entities
+                     */
                 } else if (request.startsWith("2")) {
                     List<Employee> employeesList = ed.getAllEmployees(); // get all of the employees first from the ArrayList using the getAllEmployees() method
 
@@ -125,8 +127,16 @@ class ClientHandler implements Runnable {
                     System.out.println("Server message: display all entities response sent to client.");
 
                 } else if (request.startsWith("3")) {
-                    String message = "TEST";
-                    socketWriter.println(message);
+                    clientResponse = socketReader.readLine();
+                    Gson gsonParser = new Gson();
+                    Employee e = gsonParser.fromJson(clientResponse, Employee.class);
+                    try {
+                        ed.InsertEmployee(e);
+                        socketWriter.println("Sucessfully added employee to database: \n" + gsonParser.toJson(e));
+                    } catch (DaoException ex) {
+                        socketWriter.println(gsonParser.toJson("Failed to add employee to database: " + ex.getMessage()));
+                    }
+
                 } else if (request.startsWith("0")) {
                     socketWriter.println("Goodbye");
                     System.out.println("Server message: Client has notified us that it is quitting.");
