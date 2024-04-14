@@ -2,11 +2,7 @@ package ClientServer;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import org.example.DAOs.EmployeeDaoInterface;
-import org.example.DAOs.JsonConverter;
-import org.example.DAOs.MySqlEmployeeDao;
 import org.example.DTOs.Employee;
-import org.example.Exceptions.DaoException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,9 +28,9 @@ public class Client {
         ) {
             System.out.println("The client is running and has connected to the server");
             Scanner key = new Scanner(System.in);
-            System.out.println("\n1. Display entity by id in JSON format");
-            System.out.println("2. Display all entities in JSON format");
-            System.out.println("3. Add an entity");
+            System.out.println("\n1. Display entity by Employee ID");
+            System.out.println("2. Display all Entities (Employees)");
+            System.out.println("3. Add an entity (Employee)");
             System.out.println("0. Quit");
             System.out.println("Please enter your choice: ");
             String userRequest = key.nextLine();
@@ -45,15 +41,17 @@ public class Client {
 
                 // process the answer returned by the server
                 if (userRequest.startsWith("1")) {
-                    String serverResponse = in.readLine(); //in.read line taking the response
-                    System.out.println("Display entity by id: " + serverResponse);
+                    System.out.println("Please enter ID");
+                    Scanner kbrd = new Scanner(System.in);
 
-                    //TODO: Feature 10
+                    int employeeID = kbrd.nextInt();
+
+                    out.println(employeeID);
+                    String employeeJson = in.readLine();
+
+                    System.out.println("Display entity by id: " + employeeJson);
+
                 } else if (userRequest.startsWith("2")) {
-//                    String serverResponse = in.readLine();
-//
-//                    System.out.println("Display all entities: " + serverResponse);
-
                     // recieving the json string of employees from server
                     String serverResponse = in.readLine();
                     Type employeeListType = new TypeToken<ArrayList<Employee>>(){}.getType();    // Using TypeToken for the gson parser to create arraylist of employees

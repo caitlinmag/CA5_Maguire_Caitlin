@@ -1,6 +1,5 @@
 package ClientServer;
 
-import org.example.DAOs.EmployeeDaoInterface;
 import org.example.DAOs.JsonConverter;
 import org.example.DAOs.MySqlEmployeeDao;
 import org.example.DTOs.Employee;
@@ -90,17 +89,32 @@ class ClientHandler implements Runnable {
         MySqlEmployeeDao ed = new MySqlEmployeeDao();
         JsonConverter jsonConverter = new JsonConverter();
 
+        /**
+         * Main Author : Rory O'Gorman
+         *
+         * Feature 9: Display a single entity
+         */
         try {
             while ((request = socketReader.readLine()) != null) {
                 System.out.println("Server (ClientHandler): Read command from client " + clientNum + ": " + request);
                 if (request.startsWith("1")) {
-                    System.out.println("TEST");
 
-/**
- * Main Author : Caitlin Maguire
- *
- * Feature 10: Display all entities
- */
+                    System.out.println("\nCall Employees as a JSON string");
+                    int employeeID = Integer.parseInt(socketReader.readLine());
+                    try {
+
+                        Employee employee = ed.findEmployeeById(employeeID);
+                        jsonConverter.singleEmployeeToJson(employee);
+                        socketWriter.println(employee);
+                    } catch (DaoException e) {
+                        e.printStackTrace();
+                    }
+
+        /**
+         * Main Author : Caitlin Maguire
+         *
+         * Feature 10: Display all entities
+         */
                 } else if (request.startsWith("2")) {
                     List<Employee> employeesList = ed.getAllEmployees(); // get all of the employees first from the ArrayList using the getAllEmployees() method
 

@@ -106,20 +106,7 @@ public class MainApp {
 
             if (employeesList.isEmpty())
                 System.out.println("There are no employees");
-            else {
-                // printing employee table headers
-                System.out.println("_____________________________________________________________________________________________________________");
-                System.out.printf("%-12s %-12s %-12s %-12s %-26s %-18s %-12s%n", "Employee ID", "Firstname", "Surname", "Age", "Department",
-                        "Job-Role", "Hourly-Rate");
-                System.out.println("_____________________________________________________________________________________________________________");
 
-                // printing each employee entity
-                for (Employee e : employeesList)
-                    System.out.printf("%-12d %-12s %-12s %-5d %-26s %-26s €%.2f%n",
-                            e.getEmpID(), e.getFirstName(), e.getLastName(), e.getAge(), e.getDepartment(), e.getRole(), e.getHourlyRate());
-
-//                System.out.println("Employee: " + e.toString());
-            }
         } catch (DaoException ex) {
             ex.printStackTrace();
         }
@@ -365,6 +352,7 @@ public class MainApp {
             List<Employee> employeesList = IEmployeeDao.getAllEmployees();       // using the getAllEmployees() method to access all employees
             String jsonString = jsonConverter.employeesListToJson(employeesList);  // call the employeesListToJson method using the jsonConverter object
             System.out.println(jsonString);    // output json string of employees list
+
         } catch (DaoException ex) {
             ex.printStackTrace();
         }
@@ -381,7 +369,8 @@ public class MainApp {
             System.out.println("Please enter an Employee ID");
             int employeeID = kbrd.nextInt();
             Employee employee = IEmployeeDao.findEmployeeById(employeeID);
-            jsonConverter.singleEmployeeToJson(employee);
+            String jsonString = jsonConverter.singleEmployeeToJson(employee);
+            System.out.println(jsonString);
 
         } catch (DaoException e) {
             e.printStackTrace();
