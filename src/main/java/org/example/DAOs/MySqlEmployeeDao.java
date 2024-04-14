@@ -37,7 +37,13 @@ public class MySqlEmployeeDao extends MySqlDao implements EmployeeDaoInterface {
 
             resultSet = preparedStatement.executeQuery();
 
+            System.out.println("\n* DISPLAYING ALL EMPLOYEES *\n");
+
             // Display the column headers of the employees table
+            System.out.println("_____________________________________________________________________________________________________________");
+            System.out.printf("%-12s %-12s %-12s %-12s %-26s %-18s %-12s%n", "Employee ID", "Firstname", "Surname", "Age", "Department",
+                    "Job-Role", "Hourly-Rate");
+            System.out.println("_____________________________________________________________________________________________________________");
 
             while (resultSet.next()) {
                 int empID = resultSet.getInt("empID");
@@ -47,6 +53,10 @@ public class MySqlEmployeeDao extends MySqlDao implements EmployeeDaoInterface {
                 String department = resultSet.getString("department");
                 String role = resultSet.getString("role");
                 Float hourlyRate = resultSet.getFloat("hourlyRate");
+
+                // printing each employee entity
+                    System.out.printf("%-12d %-12s %-12s %-5d %-26s %-26s €%.2f%n",
+                            empID, firstName, lastName, age, department, role, hourlyRate);
 
                 // populating the employeesList ArrayList
                 Employee e = new Employee(empID, firstName, lastName, age, department, role, hourlyRate);
@@ -99,8 +109,6 @@ public class MySqlEmployeeDao extends MySqlDao implements EmployeeDaoInterface {
                 String department = resultSet.getString("department");
                 String role = resultSet.getString("role");
                 Float hourlyRate = resultSet.getFloat("hourlyRate");
-
-
 
                 employee = new Employee(empID, firstName, lastName, age, department, role, hourlyRate);
             }
