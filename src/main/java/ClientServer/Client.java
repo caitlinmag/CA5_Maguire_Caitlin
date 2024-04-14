@@ -66,8 +66,38 @@ public class Client {
                         System.out.println(employee.toString());
 
                 } else if (userRequest.startsWith("3")) {
+
+                    String firstName, lastName, department, role;
+                    int age;
+                    float hourlyRate;
+
+                    System.out.print("First name: ");
+                    firstName = key.next();
+
+                    System.out.print("Last name: ");
+                    lastName = key.next();
+
+                    System.out.print("Age: ");
+                    age = key.nextInt();
+                    key.nextLine();
+
+                    System.out.print("Department: ");
+                    department = key.nextLine();
+
+                    System.out.print("Role: ");
+                    role = key.nextLine();
+
+                    System.out.print("Hourly rate: ");
+                    hourlyRate = key.nextFloat();
+
+                    Employee newEmployee = new Employee(0, firstName, lastName, age, department, role, hourlyRate);
+                    Gson gsonParser=new Gson();
+
+                    String jsonRequest=gsonParser.toJson(newEmployee);
+                    out.println(jsonRequest);
+
                     String newEmployeeJson = in.readLine();
-                    System.out.println("Add an entity: " + newEmployeeJson);
+                    System.out.println(newEmployeeJson);
 
                 }else if (userRequest.startsWith("0")) {// if the user has entered the "quit" command
                     String response = in.readLine();   // wait for response -
@@ -81,9 +111,9 @@ public class Client {
                 //TODO: create a displayClientMenu() method
 
                 // multithreading the client menu
-                System.out.println("\n1. Display Entity by id");
-                System.out.println("2. Display all Entities");
-                System.out.println("3. Add an Entity");
+                System.out.println("\n1. Display Entity by ID)");
+                System.out.println("2. Display all Entities (Employees)");
+                System.out.println("3. Add an Entity (Employee)");
                 System.out.println("0. Quit");
 
                 System.out.println("Please enter your choice: ");

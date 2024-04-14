@@ -13,14 +13,6 @@ public class MainApp {
     public static void main(String[] args) {
         Scanner key = new Scanner(System.in);
         int choice;
-//        String firstName;
-//        String lastName;
-//        int age;
-//        String department;
-//        String role;
-//        float hourlyRate;
-//
-//        EmployeeDaoInterface IEmployeeDao = new MySqlEmployeeDao();
 
         do {
             // calling method to display the menu
