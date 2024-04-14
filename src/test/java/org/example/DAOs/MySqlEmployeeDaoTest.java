@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -390,5 +391,18 @@ class MySqlEmployeeDaoTest {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Main Author: Caitlin Maguire
+     *
+     */
+
+    @Test
+    void clientServerDisplayEntitiesTest(){
+        System.out.println("Test 15 - check if all entities display in the Client side Menu");
+
+
+    }
+
 }
 
