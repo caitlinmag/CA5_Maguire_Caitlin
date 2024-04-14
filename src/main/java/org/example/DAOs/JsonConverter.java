@@ -9,17 +9,11 @@ import java.util.List;
 
 public class JsonConverter {
 
+    Gson gsonParser = new Gson();
+
     /**
      * Main Author: Caitlin Maguire
      */
-
-    public static void main(String[] args) {
-
-
-    }
-
-    Gson gsonParser = new Gson();
-
 
     // Feature 7:
     // Method to convert a list of employee entities to a JSON String

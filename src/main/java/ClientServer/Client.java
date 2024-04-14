@@ -41,7 +41,8 @@ public class Client {
 
                 // process the answer returned by the server
                 if (userRequest.startsWith("1")) {
-                    System.out.println("Please enter ID");
+                    System.out.println(" * DISPLAY AN EMPLOYEE OF THE RETAIL STORE * \n");
+                    System.out.println("Please enter an Employee ID: ");
                     Scanner kbrd = new Scanner(System.in);
 
                     int employeeID = kbrd.nextInt();
@@ -49,7 +50,7 @@ public class Client {
                     out.println(employeeID);
                     String employeeJson = in.readLine();
 
-                    System.out.println("Display entity by id: " + employeeJson);
+                    System.out.println("Selected Entity : \n" + employeeJson);
 
                 } else if (userRequest.startsWith("2")) {
                     // recieving the json string of employees from server
@@ -58,7 +59,7 @@ public class Client {
 
                     List<Employee> employeesList = new Gson().fromJson(serverResponse, employeeListType);   // parse the ArrayList from json
 
-                    System.out.println("All Employees of the Retail Store: ");
+                    System.out.println(" * ALL EMPLOYEES OF THE RETAIL STORE * \n");
 
                     // iterate through employees and display each employee using the toString() method
                     for(Employee employee : employeesList)
