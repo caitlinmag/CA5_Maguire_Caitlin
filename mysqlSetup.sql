@@ -5,7 +5,7 @@ CREATE TABLE employees(empID int NOT NULL AUTO_INCREMENT,
              lastName VARCHAR(20),
 			 age int, 
 			 department VARCHAR(20),
-			 role VARCHAR(20),
+			 role VARCHAR(60),
 			 hourlyRate FLOAT,
 			 PRIMARY KEY (empID));
 			 
