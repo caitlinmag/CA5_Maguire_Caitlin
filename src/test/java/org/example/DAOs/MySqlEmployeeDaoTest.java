@@ -1,14 +1,14 @@
 package org.example.DAOs;
 
-import org.example.DTOs.Employee;
-import org.example.Exceptions.DaoException;
-
 import org.example.DTOs.*;
+import org.example.Exceptions.DaoException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.PrintWriter;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -20,7 +20,7 @@ class MySqlEmployeeDaoTest {
     MySqlEmployeeDao ed = null;
     JsonConverter jc=null;
     Connection connection = null;
-
+    Socket socket = null;
     //Creating the dao class
     @BeforeEach
     void setUp() {
@@ -40,7 +40,6 @@ class MySqlEmployeeDaoTest {
             System.out.println("Reset Increment failed: " + ex.getMessage());
         }
     }
-
     /**
      * Tutorial used for JUnit testing for java and sql:
      * https://softwaredesign.home.blog/tutorials/junit-test-with-dao-data-access-object-class/
@@ -48,9 +47,8 @@ class MySqlEmployeeDaoTest {
 
     /**
      * Main author: Caitlin Maguire
-     *
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void getAllEmployeesTest() throws DaoException {
         System.out.println("Test 1 - check whether all 10 employees display");
         List<Employee> employeesList = ed.getAllEmployees();
@@ -61,19 +59,18 @@ class MySqlEmployeeDaoTest {
     /**
      * Main author: Caitlin Maguire
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void findEmployeeByInvalidIdTest() throws DaoException {
         System.out.println("Test 2 - check whether an employee is found by testing an invalid id");
-
-        MySqlEmployeeDao ed = new MySqlEmployeeDao();
         //exception scenario
         Employee employee = ed.findEmployeeById(-1);
         assertNull(employee);
     }
+
     /**
      * Main author: Caitlin Maguire
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void findEmployeeByValidIdTest() throws DaoException {
         System.out.println("Test 3 - check whether an employee is found by testing a valid id");
 
@@ -92,12 +89,10 @@ class MySqlEmployeeDaoTest {
      * Main author: Caitlin Maguire
      * Other contributor: Jamie Lawlor
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void deleteEmployeeTest() throws DaoException {
         System.out.println("Test 4 - check if an employee can be deleted from the database");
-//        Employee testEmployee = new Employee(12, "test", "testing", 32, "Sales", "Assistant Supervisor", 12.31f);
         connection = ed.getConnection();
-
         try {
             connection.setAutoCommit(false);
             Employee testEmployee = new Employee(11, "test", "testing", 32, "Sales", "Assistant Supervisor", 12.31f);
@@ -125,17 +120,16 @@ class MySqlEmployeeDaoTest {
      * Main author: Caitlin Maguire
      * Other contributor: Jamie Lawlor
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void insertEmployeeTest() throws DaoException {
         System.out.println("Test 5 - check if a new employee is added to the database");
         connection = ed.getConnection();
-
         try {
             connection.setAutoCommit(false);
             Employee testEmployee = new Employee(11, "Sally", "McQueen", 22, "Sales", "Assistant Supervisor", 13.41f);
             ed.InsertEmployee(testEmployee);
             assertNotNull(testEmployee);                       //checking that the testEmployee object is not null
-            assertTrue(10 < testEmployee.getEmpID()); //tesing if the empId is greater than 10 - already empId 1 - 10 in the database
+            assertTrue(10 < testEmployee.getEmpID()); //testing if the empId is greater than 10 - already empId 1 - 10 in the database
             assertEquals(11, ed.getAllEmployees().size()); //test how many rows there are in the employees table
 
             //testing the new employee
@@ -147,7 +141,6 @@ class MySqlEmployeeDaoTest {
             assertEquals(testEmployee.getRole(), newEmployee.getRole());
             assertEquals(testEmployee.getHourlyRate(), newEmployee.getHourlyRate());
             ed.DeleteEmployee(testEmployee.getEmpID());
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -159,6 +152,7 @@ class MySqlEmployeeDaoTest {
                 e.printStackTrace();
             }
         }
+
     }
 
     /**
@@ -391,18 +385,30 @@ class MySqlEmployeeDaoTest {
             e.printStackTrace();
         }
     }
-
     /**
-     * Main Author: Caitlin Maguire
-     *
+     * Main author: Jamie Lawlor
      */
-
     @Test
-    void clientServerDisplayEntitiesTest(){
-        System.out.println("Test 15 - check if all entities display in the Client side Menu");
-
-
+    void socketConnectionTest(){
+        System.out.println("Test 15- check if Socket Connection works");
+        try{
+            socket= new Socket("localhost", 8888);
+        } catch (IOException e) {
+            assertNotNull(socket);
+        }
     }
-
+    /**
+     * Main author: Jamie Lawlor
+     */
+    @Test
+    void displayProductsThatEmployeeOverseesTest(){
+        System.out.println("Test 15- check if products are displaying by the id of the employee that oversees them");
+        try{
+            List<Products> productsList = ed.getAllProductsBasedOnEmployeeID(2);
+            assertNotNull(productsList);
+            assertEquals(3, productsList.size());
+        }catch (DaoException e){
+            e.printStackTrace();
+        }
+    }
 }
-

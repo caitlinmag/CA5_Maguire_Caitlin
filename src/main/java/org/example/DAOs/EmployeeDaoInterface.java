@@ -1,6 +1,7 @@
 package org.example.DAOs;
 
 import org.example.DTOs.Employee;
+import org.example.DTOs.Products;
 import org.example.Exceptions.DaoException;
 
 import java.util.Comparator;
@@ -18,5 +19,7 @@ public interface EmployeeDaoInterface {
 
     public Employee updateEmployee(int id, Employee e) throws DaoException;
     public List<Employee> findEmployeesUsingFilter(String filter, Comparator<Employee> comp) throws DaoException;
+
+    public List<Products> getAllProductsBasedOnEmployeeID(int id) throws DaoException;
 
 }
