@@ -99,10 +99,12 @@ public class Client {
                     hourlyRate = key.nextFloat();
 
                     Employee newEmployee = new Employee(0, firstName, lastName, age, department, role, hourlyRate);
+                    //Sending employee object as a JSON to server so it can process the data
 
                     String jsonRequest = gsonParser.toJson(newEmployee);
                     out.println(jsonRequest);
 
+                    //Retrieving the result
                     String newEmployeeJson = in.readLine();
                     System.out.println(newEmployeeJson);
 
@@ -123,8 +125,9 @@ public class Client {
                 }else if (userRequest.startsWith("5")) {
                     boolean validInput = false;
 
-                    while (!validInput) {
+                    while (!validInput) {          //Check for correct input from user
                         System.out.println("Which image would you like to select?: DkIT, Dog, Oracle, Github");
+                        //Sending user's choice over to the server socket to identify the correct image
                         String userInput = key.nextLine();
                         if (userInput.equalsIgnoreCase("DkIT")) {
                             //Sending user's choice over to the server socket to identify the correct image
@@ -258,7 +261,7 @@ public class Client {
 
         System.out.println("File is Received");
 
-        System.out.println("Look in the images folder to see the transferred file: parrot_image_received.jpg");
+        System.out.println("Look in the images folder to see the transferred file: "+fileName);
         fileOutputStream.close();
     }
 }
