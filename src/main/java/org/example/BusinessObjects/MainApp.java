@@ -43,6 +43,7 @@ public class MainApp {
                 }
                 case 5: {
                     //FEATURE 5 : Update an employee
+
                     callFeature5();
                     break;
                 }
@@ -82,6 +83,7 @@ public class MainApp {
         System.out.println("    *   6. Filter Entities (Employees)                                        *");
         System.out.println("    *   7. Display a JSON String of all Employees                             *");
         System.out.println("    *   8. Display a JSON String of a Single Employee                         *");
+        System.out.println("    *   9. Display products that employees oversee                            *");
         System.out.println("    *   0. Exit                                                               *");
         System.out.println("    *                                                                         *");
         System.out.println("    ***************************************************************************");
@@ -95,22 +97,20 @@ public class MainApp {
             System.out.println("\n* DISPLAYING ALL EMPLOYEES *\n");
             List<Employee> employeesList = IEmployeeDao.getAllEmployees();
 
-            if(employeesList.isEmpty())
-                System.out.println("There are no employees in the Database.");
+            if (employeesList.isEmpty())
+                System.out.println("There are no employees");
             else {
-                // Display the column headers of the employees table
+                // printing employee table headers
                 System.out.println("_____________________________________________________________________________________________________________");
                 System.out.printf("%-12s %-12s %-12s %-12s %-26s %-18s %-12s%n", "Employee ID", "Firstname", "Surname", "Age", "Department",
                         "Job-Role", "Hourly-Rate");
                 System.out.println("_____________________________________________________________________________________________________________");
 
-                for (Employee employee : employeesList) {
-                    // printing each employee entity
+                // printing each employee entity
+                for (Employee e : employeesList)
                     System.out.printf("%-12d %-12s %-12s %-5d %-26s %-26s €%.2f%n",
-                            employee.getEmpID(), employee.getFirstName(), employee.getLastName(), employee.getAge(), employee.getDepartment(), employee.getRole(), employee.getHourlyRate());
-                }
+                            e.getEmpID(), e.getFirstName(), e.getLastName(), e.getAge(), e.getDepartment(), e.getRole(), e.getHourlyRate());
             }
-
         } catch (DaoException ex) {
             ex.printStackTrace();
         }
@@ -185,9 +185,9 @@ public class MainApp {
         lastName = key.next();
         System.out.print("Age: ");
         age = key.nextInt();
-                    /*This line fixes issue with nextInt() and nextLine() that was skipping over a line of input,
-                     so inputs are read properly now.
-                     */
+        /*This line fixes issue with nextInt() and nextLine() that was skipping over a line of input,
+          so inputs are read properly now.
+        */
         key.nextLine();
         System.out.print("Department: ");
         department = key.nextLine();
@@ -287,6 +287,8 @@ public class MainApp {
                 }
             } while (fin);
 
+
+//            System.out.println("\nCalling updateEmployee()\n");
             Employee employee = IEmployeeDao.updateEmployee(empID, updateEmployee);
             System.out.println("Employee updated successfully");
             System.out.println("Updated Employee: " + IEmployeeDao.findEmployeeById(employee.getEmpID()));
@@ -363,7 +365,6 @@ public class MainApp {
             List<Employee> employeesList = IEmployeeDao.getAllEmployees();       // using the getAllEmployees() method to access all employees
             String jsonString = jsonConverter.employeesListToJson(employeesList);  // call the employeesListToJson method using the jsonConverter object
             System.out.println(jsonString);    // output json string of employees list
-
         } catch (DaoException ex) {
             ex.printStackTrace();
         }
@@ -371,10 +372,11 @@ public class MainApp {
 
     public static void callFeature8() {
         EmployeeDaoInterface IEmployeeDao = new MySqlEmployeeDao();
+
+        //create a json converter object
         JsonConverter jsonConverter = new JsonConverter();
 
         System.out.println("\n* DISPLAY AN EMPLOYEE IN JSON FORMAT *\n");
-
         try {
             Scanner kbrd = new Scanner(System.in);
             System.out.println("Please enter ID");

@@ -143,11 +143,13 @@ class ClientHandler implements Runnable {
                     }
 
                 } else if (request.startsWith("3")) {
-
+                    //Getting the response from the client
                     clientResponse=socketReader.readLine();
+                    //Turning the JSON into an employee object for use
                     Employee e=gsonParser.fromJson(clientResponse, Employee.class);
                     try {
                         ed.InsertEmployee(e);
+                        //Sending result back to client
                         socketWriter.println("Sucessfully added employee to database: \n"+gsonParser.toJson(e));
                     }catch (DaoException ex){
                         socketWriter.println(gsonParser.toJson("Failed to add employee to database: "+ex.getMessage()));
@@ -190,6 +192,7 @@ class ClientHandler implements Runnable {
                         dataInputStream.close();
                     }
                 }else if (request.startsWith("6")){
+                    //Get the id that was passed from client
                     int employeeID = Integer.parseInt(socketReader.readLine());
                     List<Products> productsList = ed.getAllProductsBasedOnEmployeeID(employeeID); // get all of the employees first from the ArrayList using the getAllEmployees() method
                     clientResponse=gsonParser.toJson(productsList);
@@ -229,6 +232,8 @@ class ClientHandler implements Runnable {
     private static void sendFile(String userInput, ArrayList<String> path) throws Exception {
         int bytes = 0;
         File file;
+
+        //Creating a new file based on user's input and which image path to select from the arrayList
         if (userInput.equalsIgnoreCase("DkIT")) {
             file = new File(path.get(0));
         } else if (userInput.equalsIgnoreCase("Dog")) {
