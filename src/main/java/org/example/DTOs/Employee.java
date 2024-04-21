@@ -89,14 +89,14 @@ public class Employee implements Comparator<Employee>{
 
     @Override
     public String toString() {
-        return "Employee{" +
-                "empID = " + empID +
-                ", firstName = '" + firstName + '\'' +
-                ", lastName = '" + lastName + '\'' +
-                ", age = " + age +
-                ", department = '" + department + '\'' +
-                ", role = '" + role + '\'' +
-                ", hourlyRate = " + hourlyRate +
+        return "Employee: {" +
+                " Employee ID = " + empID +
+                ", First Name = '" + firstName + '\'' +
+                ", Last Name = '" + lastName + '\'' +
+                ", Age = " + age +
+                ", Department = '" + department + '\'' +
+                ", Job Role = '" + role + '\'' +
+                ", Hourly Rate = " + hourlyRate +
                 '}';
     }
     @Override

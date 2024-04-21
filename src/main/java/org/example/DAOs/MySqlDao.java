@@ -9,14 +9,9 @@ import java.sql.*;
  * Main author: Caitlin Maguire
  */
 
-/*
-    This class implements functionality common to all MySQL DAOs
-    getConnection()
- */
 public abstract class MySqlDao {
 
     public Connection getConnection() throws DaoException {
-//        String driver = "C:\\mysql-connector-java-5.1.15-bin (1)";
         String url = "jdbc:mysql://localhost:3306/";
         String dbName = "retail_store";
         String userName = "root";
